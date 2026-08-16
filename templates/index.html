@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MovieMate</title>
+
+    <link rel="stylesheet" href="../static/css/style.css">
+
+</head>
+
+<body>
+
+
+    <div class="container">
+
+       <h1>🎬 MovieMate</h1>
+
+<p class="tagline">Not sure what to watch? Ask MovieMate! 🍿</p>
+
+<div class="top-buttons">
+
+    <button id="favoritesButton">
+        ❤️ My Favorites
+    </button>
+
+    <button id="surpriseButton">
+        🎲 Surprise Me
+    </button>
+
+    <button id="recentButton">
+    🕘 Recent Searches
+</button>
+<button id="filterButton">
+    🎛️ Filters
+</button>
+
+</div>
+<div id="filterPanel" class="filter-panel">
+
+    <select id="languageFilter">
+        <option value="">🌐 All Languages</option>
+        <option value="Telugu">Telugu</option>
+        <option value="Hindi">Hindi</option>
+        <option value="Tamil">Tamil</option>
+        <option value="English">English</option>
+    </select>
+
+    <select id="genreFilter">
+        <option value="">🎭 All Genres</option>
+        <option value="Action">Action</option>
+        <option value="Comedy">Comedy</option>
+        <option value="Romance">Romance</option>
+        <option value="Thriller">Thriller</option>
+        <option value="Horror">Horror</option>
+    </select>
+
+    <select id="ratingFilter">
+        <option value="">⭐ Any Rating</option>
+        <option value="8">8+ Rating</option>
+        <option value="7">7+ Rating</option>
+        <option value="6">6+ Rating</option>
+    </select>
+
+    <button id="applyFilters">
+        🔍 Apply
+    </button>
+
+</div>
+<div class="chat-box">
+
+            <div class="bot-message">
+                Hi! 👋 I'm MovieMate. Tell me what kind of movie you want to watch!
+            </div>
+
+        </div>
+         
+        
+
+        <div class="input-area">
+
+            <input
+                type="text"
+                id="userInput"
+                placeholder="Example: Suggest me a Telugu comedy movie..."
+            >
+
+            <div id="suggestions" class="suggestions"></div>
+
+            <button id="sendButton">Send</button>
+
+        </div>
+
+    </div>
+
+ <script src="../static/js/script.js"></script>
+
+</body>
+
+</html>
