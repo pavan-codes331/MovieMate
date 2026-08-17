@@ -68,11 +68,11 @@ function displayMovies(movies, headingText) {
 
             <p class="rating">
                 <span class="rating-stars">
-                    ${getStars(movie.rating)}
+                    ${getStars(movie.rating || 0)}
                 </span>
 
                 <span class="rating-number">
-                    ${movie.rating}/10
+                    ${movie.rating ? movie.rating.toFixed(1) : "N/A"}/10
                 </span>
             </p>
 
