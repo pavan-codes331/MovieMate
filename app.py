@@ -406,25 +406,7 @@ except requests.RequestException as e:
         "found": False,
         "reply": "Sorry, I'm having trouble connecting to the movie database right now."
     })
-    # If movies are found
-    if matching_movies:
-
-        movies = random.sample(
-            matching_movies,
-            min(4, len(matching_movies))
-        )
-
-        return jsonify({
-            "found": True,
-            "movies": movies
-        })
-
-    else:
-
-        return jsonify({
-            "found": False,
-            "reply": "Sorry! I don't have movies for that language and genre yet."
-        })
+ 
 
 @app.route("/movies", methods=["GET"])
 def get_movies():
