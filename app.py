@@ -319,7 +319,7 @@ def recommend():
         "hindi",
         "english",
         "tamil",
-        "malayalam"
+        "malayalam",
         "kannada"
     ]
 
@@ -345,69 +345,74 @@ def recommend():
             "reply": "Please tell me what genre you want: comedy, action, romance, thriller, horror, or drama."
         })
 
-  # Search movies from TMDB
-genre_id = TMDB_GENRES.get(selected_genre)
-language_code = TMDB_LANGUAGES.get(selected_language) if selected_language else None
+    # Search movies from TMDB
+    genre_id = TMDB_GENRES.get(selected_genre)
+    language_code = TMDB_LANGUAGES.get(selected_language) if selected_language else None
 
-if genre_id is None:
-    return jsonify({
-        "found": False,
-        "reply": "Sorry, I don't recognize that genre."
-    })
-
-params = {
-    "api_key": TMDB_API_KEY,
-    "with_genres": genre_id,
-    "sort_by": "popularity.desc",
-    "page": 1,
-    "include_adult": False
-}
-
-if language_code:
-    params["with_original_language"] = language_code
-
-try:
-    response = requests.get(TMDB_URL, params=params, timeout=10)
-    response.raise_for_status()
-
-    data = response.json()
-    tmdb_movies = data.get("results", [])
-
-    if tmdb_movies:
-        movies = []
-
-        for movie in tmdb_movies[:4]:
-            movies.append({
-                "title": movie.get("title"),
-                "language": movie.get("original_language"),
-                "genre": selected_genre,
-                "overview": movie.get("overview"),
-                "poster": (
-                    "https://image.tmdb.org/t/p/w500"
-                    + movie["poster_path"]
-                    if movie.get("poster_path")
-                    else None
-                ),
-                "release_date": movie.get("release_date")
-            })
-
-        return jsonify({
-            "found": True,
-            "movies": movies
-        })
-
-    else:
+    if genre_id is None:
         return jsonify({
             "found": False,
-            "reply": "Sorry, I couldn't find movies for that language and genre."
+            "reply": "Sorry, I don't recognize that genre."
         })
 
-except requests.RequestException as e:
-    return jsonify({
-        "found": False,
-        "reply": "Sorry, I'm having trouble connecting to the movie database right now."
-    })
- 
+    params = {
+        "api_key": TMDB_API_KEY,
+        "with_genres": genre_id,
+        "sort_by": "popularity.desc",
+        "page": 1,
+        "include_adult": False
+    }
+
+    if language_code:
+        params["with_original_language"] = language_code
+
+    try:
+        response = requests.get(
+            TMDB_URL,
+            params=params,
+            timeout=10
+        )
+
+        response.raise_for_status()
+
+        data = response.json()
+        tmdb_movies = data.get("results", [])
+
+        if tmdb_movies:
+            movies = []
+
+            # Get 10 movies from TMDB
+            for movie in tmdb_movies[:10]:
+                movies.append({
+                    "title": movie.get("title"),
+                    "language": movie.get("original_language"),
+                    "genre": selected_genre,
+                    "overview": movie.get("overview"),
+                    "poster": (
+                        "https://image.tmdb.org/t/p/w500"
+                        + movie["poster_path"]
+                        if movie.get("poster_path")
+                        else None
+                    ),
+                    "release_date": movie.get("release_date")
+                })
+
+            return jsonify({
+                "found": True,
+                "movies": movies
+            })
+
+        else:
+            return jsonify({
+                "found": False,
+                "reply": "Sorry, I couldn't find movies for that language and genre."
+            })
+
+    except requests.RequestException:
+        return jsonify({
+            "found": False,
+            "reply": "Sorry, I'm having trouble connecting to the movie database right now."
+        })
 
 @app.route("/movies", methods=["GET"])
 def get_movies():
