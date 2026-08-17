@@ -387,6 +387,7 @@ def recommend():
                     "title": movie.get("title"),
                     "language": movie.get("original_language"),
                     "genre": selected_genre,
+                    "rating": movie.get("vote_average"),
                     "overview": movie.get("overview"),
                     "poster": (
                         "https://image.tmdb.org/t/p/w500"
