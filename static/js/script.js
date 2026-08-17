@@ -366,6 +366,55 @@ chatBox.appendChild(loadMoreButton);
         `;
 
         // Add each movie card INSIDE the grid
+               // 🎬 Open Movie Details
+        movieCard.addEventListener("click", (event) => {
+
+            // Don't open popup when clicking buttons
+            if (
+                event.target.closest(".favorite-btn") ||
+                event.target.closest(".trailer-btn") ||
+                event.target.closest(".watch-btn")
+            ) {
+                return;
+            }
+
+            document.getElementById("modalPoster").src =
+                movie.poster || "";
+
+            document.getElementById("modalTitle").textContent =
+                movie.title || "Unknown Title";
+
+            document.getElementById("modalRating").textContent =
+                `⭐ Rating: ${
+                    movie.rating
+                    ? movie.rating.toFixed(1)
+                    : "N/A"
+                }/10`;
+
+            document.getElementById("modalRelease").textContent =
+                `📅 Release Date: ${
+                    movie.release_date || "Unknown"
+                }`;
+
+            document.getElementById("modalLanguage").textContent =
+                `🌐 Language: ${
+                    movie.language || "Unknown"
+                }`;
+
+            document.getElementById("modalGenre").textContent =
+                `🎭 Genre: ${
+                    movie.genre || "Unknown"
+                }`;
+
+            document.getElementById("modalOverview").textContent =
+                movie.overview ||
+                "No description available.";
+
+            document.getElementById("movieModal").style.display =
+                "flex";
+        });
+
+        // Add each movie card INSIDE the grid
         movieGrid.appendChild(movieCard);
 
     });
