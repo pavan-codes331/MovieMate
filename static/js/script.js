@@ -808,3 +808,18 @@ applyFilters.addEventListener("click", async function() {
     `🎛️ Found ${filteredMovies.length} movie(s) matching your filters`
 );
 });
+// 🎬 Movie Details Modal Controls
+
+const movieModal = document.getElementById("movieModal");
+const closeMovieModal = document.getElementById("closeMovieModal");
+
+closeMovieModal.addEventListener("click", () => {
+    movieModal.style.display = "none";
+});
+
+// Close when clicking outside the popup
+movieModal.addEventListener("click", (event) => {
+    if (event.target === movieModal) {
+        movieModal.style.display = "none";
+    }
+});
