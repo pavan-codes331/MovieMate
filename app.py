@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import random
 import requests
-TMDB_API_KEY = c85e63534b837ac3e78c74b71755af34
+TMDB_API_KEY = "c85e63534b837ac3e78c74b71755af34"
 
 TMDB_URL = "https://api.themoviedb.org/3/discover/movie"
 
