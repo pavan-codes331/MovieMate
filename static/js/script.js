@@ -153,10 +153,19 @@ function displayMovies(movies, headingText) {
                     movie.release_date || "Unknown"
                 }`;
 
-            document.getElementById("modalLanguage").textContent =
-                `🌐 Language: ${
-                    movie.language || "Unknown"
-                }`;
+           const languageNames = {
+    te: "Telugu",
+    hi: "Hindi",
+    ta: "Tamil",
+    ml: "Malayalam",
+    kn: "Kannada",
+    en: "English",
+    bn: "Bengali",
+    mr: "Marathi"
+};
+
+document.getElementById("modalLanguage").textContent =
+    `🌐 Language: ${languageNames[movie.language] || movie.language || "Unknown"}`;
 
             document.getElementById("modalGenre").textContent =
                 `🎭 Genre: ${
