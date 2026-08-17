@@ -304,6 +304,7 @@ def recommend():
 
     data = request.get_json()
     message = data.get("message", "").lower()
+    page = int(data.get("page", 1))
 
     genres = [
         "comedy",
@@ -359,7 +360,7 @@ def recommend():
         "api_key": TMDB_API_KEY,
         "with_genres": genre_id,
         "sort_by": "popularity.desc",
-        "page": 1,
+        "page": page,
         "include_adult": False
     }
 
