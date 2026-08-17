@@ -118,6 +118,27 @@ function displayMovies(movies, headingText) {
 
             </div>
         `;
+        movieCard.addEventListener("click", () => {
+    document.getElementById("modalPoster").src = movie.poster || "";
+    document.getElementById("modalTitle").textContent = movie.title || "Unknown Title";
+
+    document.getElementById("modalRating").textContent =
+        `⭐ Rating: ${movie.rating ? movie.rating.toFixed(1) : "N/A"}/10`;
+
+    document.getElementById("modalRelease").textContent =
+        `📅 Release Date: ${movie.release_date || "Unknown"}`;
+
+    document.getElementById("modalLanguage").textContent =
+        `🌐 Language: ${movie.language || "Unknown"}`;
+
+    document.getElementById("modalGenre").textContent =
+        `🎭 Genre: ${movie.genre || "Unknown"}`;
+
+    document.getElementById("modalOverview").textContent =
+        movie.overview || "No description available.";
+
+    document.getElementById("movieModal").style.display = "flex";
+});
 
         movieGrid.appendChild(movieCard);
     });
