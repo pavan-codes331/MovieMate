@@ -123,21 +123,6 @@ function displayMovies(movies, headingText) {
     });
 
     chatBox.appendChild(movieGrid);
-
-    currentSearch = message;
-currentPage = 1;
-currentMovieGrid = movieGrid;
-
-const loadMoreButton = document.createElement("button");
-loadMoreButton.classList.add("load-more-btn");
-loadMoreButton.textContent = "🎬 Load More";
-
-loadMoreButton.addEventListener("click", () => {
-    loadMoreMovies(loadMoreButton);
-});
-
-chatBox.appendChild(loadMoreButton);
-
     movieGrid.scrollIntoView({
         behavior: "smooth",
         block: "start"
@@ -217,6 +202,21 @@ if (data.found) {
     // Add grid to chat box
     chatBox.appendChild(movieGrid);
 
+
+    currentSearch = message;
+currentPage = 1;
+currentMovieGrid = movieGrid;
+
+const loadMoreButton = document.createElement("button");
+loadMoreButton.classList.add("load-more-btn");
+loadMoreButton.textContent = "🎬 Load More";
+
+loadMoreButton.addEventListener("click", () => {
+    loadMoreMovies(loadMoreButton);
+});
+
+chatBox.appendChild(loadMoreButton);
+    
     movies.forEach(movie => {
 
         // Create movie card
