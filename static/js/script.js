@@ -38,11 +38,9 @@ function displayMovies(movies, headingText) {
     chatBox.appendChild(heading);
 
     if (movies.length === 0) {
-
         const noMovies = document.createElement("div");
         noMovies.classList.add("bot-message");
         noMovies.textContent = "😕 No movies match these filters.";
-
         chatBox.appendChild(noMovies);
         return;
     }
@@ -59,15 +57,22 @@ function displayMovies(movies, headingText) {
         movieCard.classList.add("movie-card");
 
         movieCard.innerHTML = `
-            <img src="${movie.poster}"
+            <img src="${movie.poster || ""}"
                  class="movie-poster"
-                 alt="${movie.title}">
+                 alt="${movie.title || "Movie"}">
 
-            <h3>🎬 ${movie.title}</h3>
+            <h3>🎬 ${movie.title || "Unknown Title"}</h3>
 
-            <p>🎭 Genre: ${movie.genre}</p>
+            <p>🎭 Genre: ${movie.genre || "Unknown"}</p>
 
-           <p>🗓️ Year: ${movie.release_date ? movie.release_date.substring(0, 4) : "Unknown"}</p>
+            <p>
+                🗓️ Year:
+                ${
+                    movie.release_date
+                    ? movie.release_date.substring(0, 4)
+                    : "Unknown"
+                }
+            </p>
 
             <p class="rating">
                 <span class="rating-stars">
@@ -75,42 +80,44 @@ function displayMovies(movies, headingText) {
                 </span>
 
                 <span class="rating-number">
-                    ${movie.rating ? movie.rating.toFixed(1) : "N/A"}/10
+                    ${
+                        movie.rating
+                        ? movie.rating.toFixed(1)
+                        : "N/A"
+                    }/10
                 </span>
             </p>
 
-           <p>📝 ${movie.overview || "No description available."}</p>
+            <p>
+                📝 ${movie.overview || "No description available."}
+            </p>
 
             <div class="favorite-container">
-
                 <button
                     class="favorite-btn"
                     data-title="${movie.title}"
                     style="background:${
                         favorites.includes(movie.title)
-                        ? '#2ecc71'
-                        : '#ff3b30'
+                        ? "#2ecc71"
+                        : "#ff3b30"
                     };">
-
                     ${
                         favorites.includes(movie.title)
                         ? "❤️ Saved"
                         : "🤍 Favorite"
                     }
-
                 </button>
-
             </div>
 
             <div class="movie-buttons">
 
-                <a href="${movie.trailer}"
+                <a href="${movie.trailer || "#"}"
                    target="_blank"
                    class="trailer-btn">
                     ▶ Watch Trailer
                 </a>
 
-                <a href="${movie.watch}"
+                <a href="${movie.watch || "#"}"
                    target="_blank"
                    class="watch-btn">
                     🎬 Watch Movie
@@ -118,40 +125,60 @@ function displayMovies(movies, headingText) {
 
             </div>
         `;
-      movieCard.addEventListener("click", (event) => {
 
-    if (
-        event.target.closest(".favorite-btn") ||
-        event.target.closest(".trailer-btn") ||
-        event.target.closest(".watch-btn")
-    ) {
-        return;
-    }
-    document.getElementById("modalPoster").src = movie.poster || "";
-    document.getElementById("modalTitle").textContent = movie.title || "Unknown Title";
+        // 🎬 Open Movie Details
+        movieCard.addEventListener("click", (event) => {
 
-    document.getElementById("modalRating").textContent =
-        `⭐ Rating: ${movie.rating ? movie.rating.toFixed(1) : "N/A"}/10`;
+            // Don't open the details popup when clicking buttons
+            if (
+                event.target.closest(".favorite-btn") ||
+                event.target.closest(".trailer-btn") ||
+                event.target.closest(".watch-btn")
+            ) {
+                return;
+            }
 
-    document.getElementById("modalRelease").textContent =
-        `📅 Release Date: ${movie.release_date || "Unknown"}`;
+            document.getElementById("modalPoster").src =
+                movie.poster || "";
 
-    document.getElementById("modalLanguage").textContent =
-        `🌐 Language: ${movie.language || "Unknown"}`;
+            document.getElementById("modalTitle").textContent =
+                movie.title || "Unknown Title";
 
-    document.getElementById("modalGenre").textContent =
-        `🎭 Genre: ${movie.genre || "Unknown"}`;
+            document.getElementById("modalRating").textContent =
+                `⭐ Rating: ${
+                    movie.rating
+                    ? movie.rating.toFixed(1)
+                    : "N/A"
+                }/10`;
 
-    document.getElementById("modalOverview").textContent =
-        movie.overview || "No description available.";
+            document.getElementById("modalRelease").textContent =
+                `📅 Release Date: ${
+                    movie.release_date || "Unknown"
+                }`;
 
-    document.getElementById("movieModal").style.display = "flex";
-});
+            document.getElementById("modalLanguage").textContent =
+                `🌐 Language: ${
+                    movie.language || "Unknown"
+                }`;
+
+            document.getElementById("modalGenre").textContent =
+                `🎭 Genre: ${
+                    movie.genre || "Unknown"
+                }`;
+
+            document.getElementById("modalOverview").textContent =
+                movie.overview ||
+                "No description available.";
+
+            document.getElementById("movieModal").style.display =
+                "flex";
+        });
 
         movieGrid.appendChild(movieCard);
     });
 
     chatBox.appendChild(movieGrid);
+
     movieGrid.scrollIntoView({
         behavior: "smooth",
         block: "start"
