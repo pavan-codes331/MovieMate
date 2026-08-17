@@ -320,6 +320,7 @@ def recommend():
         "english",
         "tamil",
         "malayalam"
+        "kannada"
     ]
 
     selected_genre = None
