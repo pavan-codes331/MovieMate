@@ -428,3 +428,27 @@ h1 {
 #filterButton:hover {
     transform: scale(1.05);
 }
+/* 🎬 Load More Movies Button */
+.load-more-btn {
+    display: block;
+    margin: 25px auto 20px auto;
+    padding: 14px 30px;
+    background: linear-gradient(135deg, #0984e3, #6c5ce7);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 5px 15px rgba(9, 132, 227, 0.3);
+}
+
+.load-more-btn:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 20px rgba(108, 92, 231, 0.45);
+}
+
+.load-more-btn:active {
+    transform: scale(0.97);
+}
