@@ -11,6 +11,9 @@ const languageFilter = document.getElementById("languageFilter");
 const genreFilter = document.getElementById("genreFilter");
 const ratingFilter = document.getElementById("ratingFilter");
 const applyFilters = document.getElementById("applyFilters");
+let currentSearch = "";
+let currentPage = 1;
+let currentMovieGrid = null;
 function updateFavoritesCount(){
 
     const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -121,6 +124,20 @@ function displayMovies(movies, headingText) {
 
     chatBox.appendChild(movieGrid);
 
+    currentSearch = message;
+currentPage = 1;
+currentMovieGrid = movieGrid;
+
+const loadMoreButton = document.createElement("button");
+loadMoreButton.classList.add("load-more-btn");
+loadMoreButton.textContent = "🎬 Load More";
+
+loadMoreButton.addEventListener("click", () => {
+    loadMoreMovies(loadMoreButton);
+});
+
+chatBox.appendChild(loadMoreButton);
+
     movieGrid.scrollIntoView({
         behavior: "smooth",
         block: "start"
@@ -177,9 +194,10 @@ const response = await fetch("/recommend", {
     headers: {
         "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-        message: message
-    })
+  body: JSON.stringify({
+    message: message,
+    page: 1
+})
 });
 
 const data = await response.json();
@@ -270,6 +288,128 @@ if (data.found) {
 }
 
 // End of sendMessage()
+}
+
+async function loadMoreMovies(button) {
+
+    currentPage++;
+
+    button.disabled = true;
+    button.textContent = "🎬 Loading...";
+
+    try {
+
+        const response = await fetch("/recommend", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: currentSearch,
+                page: currentPage
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.found && data.movies.length > 0) {
+
+            data.movies.forEach(movie => {
+
+                const favorites =
+                    JSON.parse(localStorage.getItem("favorites")) || [];
+
+                const movieCard = document.createElement("div");
+                movieCard.classList.add("movie-card");
+
+                movieCard.innerHTML = `
+                    <img src="${movie.poster}"
+                         class="movie-poster"
+                         alt="${movie.title}">
+
+                    <h3>🎬 ${movie.title}</h3>
+
+                    <p>🎭 Genre: ${movie.genre}</p>
+
+                    <p>🗓️ Year:
+                        ${movie.release_date
+                            ? movie.release_date.substring(0, 4)
+                            : "Unknown"}
+                    </p>
+
+                    <p class="rating">
+                        <span class="rating-stars">
+                            ${getStars(movie.rating || 0)}
+                        </span>
+
+                        <span class="rating-number">
+                            ${movie.rating
+                                ? movie.rating.toFixed(1)
+                                : "N/A"}/10
+                        </span>
+                    </p>
+
+                    <p>📝
+                        ${movie.overview || "No description available."}
+                    </p>
+
+                    <div class="favorite-container">
+                        <button
+                            class="favorite-btn"
+                            data-title="${movie.title}"
+                            style="background:${
+                                favorites.includes(movie.title)
+                                ? '#2ecc71'
+                                : '#ff3b30'
+                            };">
+                            ${
+                                favorites.includes(movie.title)
+                                ? "❤️ Saved"
+                                : "🤍 Favorite"
+                            }
+                        </button>
+                    </div>
+
+                    <div class="movie-buttons">
+
+                        <a href="${movie.trailer || '#'}"
+                           target="_blank"
+                           class="trailer-btn">
+                            ▶ Watch Trailer
+                        </a>
+
+                        <a href="${movie.watch || '#'}"
+                           target="_blank"
+                           class="watch-btn">
+                            🎬 Watch Movie
+                        </a>
+
+                    </div>
+                `;
+
+                currentMovieGrid.appendChild(movieCard);
+            });
+
+            button.disabled = false;
+            button.textContent = "🎬 Load More";
+
+        } else {
+
+            button.textContent = "🎬 No More Movies";
+            button.disabled = true;
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        currentPage--;
+
+        button.disabled = false;
+        button.textContent = "🎬 Load More";
+
+        alert("Sorry, something went wrong while loading more movies.");
+    }
 }
 
 sendButton.addEventListener("click", sendMessage);
