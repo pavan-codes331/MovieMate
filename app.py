@@ -381,8 +381,8 @@ def recommend():
         if tmdb_movies:
             movies = []
 
-            # Get 20 movies from TMDB
-            for movie in tmdb_movies[:20]:
+            # Get 10 movies from TMDB
+            for movie in tmdb_movies[:10]:
                 movies.append({
                     "title": movie.get("title"),
                     "language": movie.get("original_language"),
