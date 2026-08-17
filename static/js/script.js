@@ -118,7 +118,15 @@ function displayMovies(movies, headingText) {
 
             </div>
         `;
-        movieCard.addEventListener("click", () => {
+      movieCard.addEventListener("click", (event) => {
+
+    if (
+        event.target.closest(".favorite-btn") ||
+        event.target.closest(".trailer-btn") ||
+        event.target.closest(".watch-btn")
+    ) {
+        return;
+    }
     document.getElementById("modalPoster").src = movie.poster || "";
     document.getElementById("modalTitle").textContent = movie.title || "Unknown Title";
 
