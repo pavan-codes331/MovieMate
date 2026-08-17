@@ -64,7 +64,7 @@ function displayMovies(movies, headingText) {
 
             <p>🎭 Genre: ${movie.genre}</p>
 
-            <p>🗓️ Year: ${movie.year}</p>
+           <p>🗓️ Year: ${movie.release_date ? movie.release_date.substring(0, 4) : "Unknown"}</p>
 
             <p class="rating">
                 <span class="rating-stars">
@@ -76,7 +76,7 @@ function displayMovies(movies, headingText) {
                 </span>
             </p>
 
-            <p>📝 ${movie.description}</p>
+           <p>📝 ${movie.overview || "No description available."}</p>
 
             <div class="favorite-container">
 
