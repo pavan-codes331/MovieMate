@@ -1,5 +1,27 @@
 from flask import Flask, render_template, request, jsonify
 import random
+import requests
+TMDB_API_KEY = c85e63534b837ac3e78c74b71755af34
+
+TMDB_URL = "https://api.themoviedb.org/3/discover/movie"
+
+TMDB_GENRES = {
+    "action": 28,
+    "comedy": 35,
+    "romance": 10749,
+    "thriller": 53,
+    "horror": 27,
+    "drama": 18
+}
+
+TMDB_LANGUAGES = {
+    "telugu": "te",
+    "hindi": "hi",
+    "tamil": "ta",
+    "malayalam": "ml",
+    "kannada": "kn",
+    "english": "en"
+}
 
 app = Flask(__name__)
 telugu_movies = [
