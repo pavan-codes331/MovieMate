@@ -202,6 +202,8 @@ document.getElementById("modalLanguage").textContent =
                 "flex";
         });
 
+     movieGrid.appendChild(movieCard);
+    });
        
 
     chatBox.appendChild(movieGrid);
