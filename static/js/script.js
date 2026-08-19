@@ -989,3 +989,15 @@ movieModal.addEventListener("click", (event) => {
         movieModal.style.display = "none";
     }
 });
+
+const movieModal = document.getElementById("movieModal");
+const closeMovieModal = document.getElementById("closeMovieModal");
+
+closeMovieModal.addEventListener("click", () => {
+    movieModal.style.display = "none";
+});
+movieModal.addEventListener("click", (event) => {
+    if (event.target === movieModal) {
+        movieModal.style.display = "none";
+    }
+});
