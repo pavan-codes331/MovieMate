@@ -203,7 +203,7 @@ document.getElementById("modalLanguage").textContent =
         });
 
         movieGrid.appendChild(movieCard);
-    });
+    })
 
     chatBox.appendChild(movieGrid);
 
