@@ -704,73 +704,52 @@ async function showFavorites(){
     });
 
 }
-async function surpriseMe(){
+async function surpriseMe() {
 
-    const response = await fetch("/movies");
-    const data = await response.json();
+    try {
 
-    const movies = data.movies;
+        const genres = [
+            "Action",
+            "Comedy",
+            "Romance",
+            "Thriller",
+            "Horror"
+        ];
 
-    const randomIndex = Math.floor(Math.random() * movies.length);
-    const movie = movies[randomIndex];
+        const randomGenre =
+            genres[Math.floor(Math.random() * genres.length)];
 
-    chatBox.innerHTML = "";
+        const response = await fetch("/recommend", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: `${randomGenre} movie`,
+                page: 1
+            })
+        });
 
-    const message = document.createElement("div");
-    message.classList.add("bot-message");
-    message.innerHTML = "🎲 MovieMate picked this movie for you!";
+        const data = await response.json();
 
-    chatBox.appendChild(message);
+        if (!data.movies || data.movies.length === 0) {
+            alert("Sorry, I couldn't find a movie right now.");
+            return;
+        }
 
-    const movieGrid = document.createElement("div");
-    movieGrid.classList.add("movie-grid");
+        const movies = data.movies;
 
-    const movieCard = document.createElement("div");
-    movieCard.classList.add("movie-card");
+        const randomMovie =
+            movies[Math.floor(Math.random() * movies.length)];
 
-    const favorites =
-        JSON.parse(localStorage.getItem("favorites")) || [];
+        displayMovies([randomMovie]);
 
-    movieCard.innerHTML = `
-        <img src="${movie.poster}" class="movie-poster" alt="${movie.title}">
+    } catch (error) {
 
-        <h3>🎬 ${movie.title}</h3>
+        console.error("Surprise Me error:", error);
 
-        <p>🎭 Genre: ${movie.genre}</p>
-
-        <p>🗓️ Year: ${movie.year}</p>
-
-        <p class="rating">
-            <span class="rating-stars">${getStars(movie.rating)}</span>
-            <span class="rating-number">${movie.rating}/10</span>
-        </p>
-
-        <p>📝 ${movie.description}</p>
-
-        <div class="favorite-container">
-            <button
-                class="favorite-btn"
-                data-title="${movie.title}"
-                style="background:${favorites.includes(movie.title) ? '#2ecc71' : '#ff3b30'};">
-                ${favorites.includes(movie.title) ? "❤️ Saved" : "🤍 Favorite"}
-            </button>
-        </div>
-
-        <div class="movie-buttons">
-
-            <a href="${movie.trailer}" target="_blank" class="trailer-btn">
-                ▶ Watch Trailer
-            </a>
-
-            <a href="${movie.watch}" target="_blank" class="watch-btn">
-                🎬 Watch Movie
-            </a>
-
-        </div>
-    `;
-
-    movieGrid.appendChild(movieCard);
-    chatBox.appendChild(movieGrid);
+        alert("Something went wrong while finding a surprise movie.");
+    }
 }
 surpriseButton.addEventListener("click", surpriseMe);
 const searchSuggestions = [
